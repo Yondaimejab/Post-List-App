@@ -9,12 +9,15 @@
 /* Begin PBXBuildFile section */
 		5DBDB71B25F3C07700BB2DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB71A25F3C07700BB2DFD /* AppDelegate.swift */; };
 		5DBDB71D25F3C07700BB2DFD /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB71C25F3C07700BB2DFD /* SceneDelegate.swift */; };
-		5DBDB71F25F3C07700BB2DFD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB71E25F3C07700BB2DFD /* ViewController.swift */; };
 		5DBDB72225F3C07700BB2DFD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DBDB72025F3C07700BB2DFD /* Main.storyboard */; };
 		5DBDB72425F3C07A00BB2DFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5DBDB72325F3C07A00BB2DFD /* Assets.xcassets */; };
 		5DBDB72725F3C07A00BB2DFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DBDB72525F3C07A00BB2DFD /* LaunchScreen.storyboard */; };
 		5DBDB73225F3C07A00BB2DFD /* ImagePostAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB73125F3C07A00BB2DFD /* ImagePostAppTests.swift */; };
 		5DBDB73D25F3C07A00BB2DFD /* ImagePostAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB73C25F3C07A00BB2DFD /* ImagePostAppUITests.swift */; };
+		5DBDB76D25F3C46D00BB2DFD /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB76C25F3C46D00BB2DFD /* LaunchViewController.swift */; };
+		5DBDB77525F3CA5200BB2DFD /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB77425F3CA5200BB2DFD /* PostViewController.swift */; };
+		5DBDB77A25F3CC8C00BB2DFD /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB77925F3CC8C00BB2DFD /* Post.swift */; };
+		5DBDB77F25F3CD1200BB2DFD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB77E25F3CD1200BB2DFD /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +41,6 @@
 		5DBDB71725F3C07700BB2DFD /* ImagePostApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImagePostApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DBDB71A25F3C07700BB2DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5DBDB71C25F3C07700BB2DFD /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		5DBDB71E25F3C07700BB2DFD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5DBDB72125F3C07700BB2DFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5DBDB72325F3C07A00BB2DFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5DBDB72625F3C07A00BB2DFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +51,10 @@
 		5DBDB73825F3C07A00BB2DFD /* ImagePostAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImagePostAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DBDB73C25F3C07A00BB2DFD /* ImagePostAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePostAppUITests.swift; sourceTree = "<group>"; };
 		5DBDB73E25F3C07A00BB2DFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5DBDB76C25F3C46D00BB2DFD /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		5DBDB77425F3CA5200BB2DFD /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		5DBDB77925F3CC8C00BB2DFD /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		5DBDB77E25F3CD1200BB2DFD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,11 +107,13 @@
 			children = (
 				5DBDB71A25F3C07700BB2DFD /* AppDelegate.swift */,
 				5DBDB71C25F3C07700BB2DFD /* SceneDelegate.swift */,
-				5DBDB71E25F3C07700BB2DFD /* ViewController.swift */,
-				5DBDB72025F3C07700BB2DFD /* Main.storyboard */,
+				5DBDB75525F3C09500BB2DFD /* Data */,
+				5DBDB75B25F3C0C700BB2DFD /* Model */,
+				5DBDB75A25F3C0BF00BB2DFD /* View Models */,
+				5DBDB75925F3C0B900BB2DFD /* ViewControllers */,
+				5DBDB75825F3C0AE00BB2DFD /* View */,
+				5DBDB74D25F3C08900BB2DFD /* Supporting Files */,
 				5DBDB72325F3C07A00BB2DFD /* Assets.xcassets */,
-				5DBDB72525F3C07A00BB2DFD /* LaunchScreen.storyboard */,
-				5DBDB72825F3C07A00BB2DFD /* Info.plist */,
 			);
 			path = ImagePostApp;
 			sourceTree = "<group>";
@@ -126,6 +134,87 @@
 				5DBDB73E25F3C07A00BB2DFD /* Info.plist */,
 			);
 			path = ImagePostAppUITests;
+			sourceTree = "<group>";
+		};
+		5DBDB74D25F3C08900BB2DFD /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5DBDB72825F3C07A00BB2DFD /* Info.plist */,
+				5DBDB74E25F3C08F00BB2DFD /* Extensions */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5DBDB74E25F3C08F00BB2DFD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5DBDB75525F3C09500BB2DFD /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				5DBDB75725F3C0A700BB2DFD /* Implementations */,
+				5DBDB75625F3C09D00BB2DFD /* Protocols */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		5DBDB75625F3C09D00BB2DFD /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		5DBDB75725F3C0A700BB2DFD /* Implementations */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Implementations;
+			sourceTree = "<group>";
+		};
+		5DBDB75825F3C0AE00BB2DFD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				5DBDB75C25F3C0EC00BB2DFD /* CustomViews */,
+				5DBDB72025F3C07700BB2DFD /* Main.storyboard */,
+				5DBDB72525F3C07A00BB2DFD /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		5DBDB75925F3C0B900BB2DFD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				5DBDB76C25F3C46D00BB2DFD /* LaunchViewController.swift */,
+				5DBDB77425F3CA5200BB2DFD /* PostViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		5DBDB75A25F3C0BF00BB2DFD /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
+		5DBDB75B25F3C0C700BB2DFD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5DBDB77925F3CC8C00BB2DFD /* Post.swift */,
+				5DBDB77E25F3CD1200BB2DFD /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		5DBDB75C25F3C0EC00BB2DFD /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = CustomViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,9 +347,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5DBDB71F25F3C07700BB2DFD /* ViewController.swift in Sources */,
+				5DBDB77525F3CA5200BB2DFD /* PostViewController.swift in Sources */,
 				5DBDB71B25F3C07700BB2DFD /* AppDelegate.swift in Sources */,
+				5DBDB77F25F3CD1200BB2DFD /* User.swift in Sources */,
+				5DBDB76D25F3C46D00BB2DFD /* LaunchViewController.swift in Sources */,
 				5DBDB71D25F3C07700BB2DFD /* SceneDelegate.swift in Sources */,
+				5DBDB77A25F3CC8C00BB2DFD /* Post.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -438,7 +530,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U2VK48STRA;
-				INFOPLIST_FILE = ImagePostApp/Info.plist;
+				INFOPLIST_FILE = "ImagePostApp/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,7 +549,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = U2VK48STRA;
-				INFOPLIST_FILE = ImagePostApp/Info.plist;
+				INFOPLIST_FILE = "ImagePostApp/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
