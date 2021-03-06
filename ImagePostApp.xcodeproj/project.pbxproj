@@ -14,8 +14,8 @@
 		5D74087A25F3DED100C35A15 /* UserUIViewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74087925F3DED000C35A15 /* UserUIViewViewModel.swift */; };
 		5D74088325F3E18400C35A15 /* PostCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74088225F3E18400C35A15 /* PostCellViewModel.swift */; };
 		5D74088825F3E4BD00C35A15 /* PostsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74088725F3E4BD00C35A15 /* PostsPresenter.swift */; };
-		5D74088D25F3E4E600C35A15 /* PostProvidingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74088C25F3E4E600C35A15 /* PostProvidingProtocol.swift */; };
-		5D74089225F3E7EE00C35A15 /* PostsPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74089125F3E7EE00C35A15 /* PostsPovider.swift */; };
+		5D74088D25F3E4E600C35A15 /* UserProvidingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74088C25F3E4E600C35A15 /* UserProvidingProtocol.swift */; };
+		5D74089225F3E7EE00C35A15 /* UsersPovider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74089125F3E7EE00C35A15 /* UsersPovider.swift */; };
 		5D74089725F3EDF300C35A15 /* OneImagePostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74089625F3EDF300C35A15 /* OneImagePostTableViewCell.swift */; };
 		5D74089F25F3F16600C35A15 /* TwoImagesPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D74089E25F3F16600C35A15 /* TwoImagesPostTableViewCell.swift */; };
 		5D7408A425F3F1CB00C35A15 /* ThreeImagesPostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7408A325F3F1CB00C35A15 /* ThreeImagesPostTableViewCell.swift */; };
@@ -61,8 +61,8 @@
 		5D74087925F3DED000C35A15 /* UserUIViewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserUIViewViewModel.swift; sourceTree = "<group>"; };
 		5D74088225F3E18400C35A15 /* PostCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCellViewModel.swift; sourceTree = "<group>"; };
 		5D74088725F3E4BD00C35A15 /* PostsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsPresenter.swift; sourceTree = "<group>"; };
-		5D74088C25F3E4E600C35A15 /* PostProvidingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostProvidingProtocol.swift; sourceTree = "<group>"; };
-		5D74089125F3E7EE00C35A15 /* PostsPovider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsPovider.swift; sourceTree = "<group>"; };
+		5D74088C25F3E4E600C35A15 /* UserProvidingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProvidingProtocol.swift; sourceTree = "<group>"; };
+		5D74089125F3E7EE00C35A15 /* UsersPovider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersPovider.swift; sourceTree = "<group>"; };
 		5D74089625F3EDF300C35A15 /* OneImagePostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneImagePostTableViewCell.swift; sourceTree = "<group>"; };
 		5D74089E25F3F16600C35A15 /* TwoImagesPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoImagesPostTableViewCell.swift; sourceTree = "<group>"; };
 		5D7408A325F3F1CB00C35A15 /* ThreeImagesPostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeImagesPostTableViewCell.swift; sourceTree = "<group>"; };
@@ -227,7 +227,7 @@
 		5DBDB75625F3C09D00BB2DFD /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				5D74088C25F3E4E600C35A15 /* PostProvidingProtocol.swift */,
+				5D74088C25F3E4E600C35A15 /* UserProvidingProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -235,7 +235,7 @@
 		5DBDB75725F3C0A700BB2DFD /* Implementations */ = {
 			isa = PBXGroup;
 			children = (
-				5D74089125F3E7EE00C35A15 /* PostsPovider.swift */,
+				5D74089125F3E7EE00C35A15 /* UsersPovider.swift */,
 			);
 			path = Implementations;
 			sourceTree = "<group>";
@@ -548,7 +548,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D7408A425F3F1CB00C35A15 /* ThreeImagesPostTableViewCell.swift in Sources */,
-				5D74088D25F3E4E600C35A15 /* PostProvidingProtocol.swift in Sources */,
+				5D74088D25F3E4E600C35A15 /* UserProvidingProtocol.swift in Sources */,
 				5D74087A25F3DED100C35A15 /* UserUIViewViewModel.swift in Sources */,
 				5D74089725F3EDF300C35A15 /* OneImagePostTableViewCell.swift in Sources */,
 				5D74086A25F3D4FD00C35A15 /* PostUserView.swift in Sources */,
@@ -557,7 +557,7 @@
 				5D74088825F3E4BD00C35A15 /* PostsPresenter.swift in Sources */,
 				5D74087525F3D8D600C35A15 /* UIImageView+Extension.swift in Sources */,
 				5D74089F25F3F16600C35A15 /* TwoImagesPostTableViewCell.swift in Sources */,
-				5D74089225F3E7EE00C35A15 /* PostsPovider.swift in Sources */,
+				5D74089225F3E7EE00C35A15 /* UsersPovider.swift in Sources */,
 				5DBDB71B25F3C07700BB2DFD /* AppDelegate.swift in Sources */,
 				5DBDB77F25F3CD1200BB2DFD /* User.swift in Sources */,
 				5DBDB76D25F3C46D00BB2DFD /* LaunchViewController.swift in Sources */,

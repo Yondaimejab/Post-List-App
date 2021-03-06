@@ -24,7 +24,7 @@ class PostUserView: UIView {
     // Properties
     var imageLoadinSubscriber: Cancellable?
 
-    init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
 
         configure()
@@ -70,11 +70,22 @@ class PostUserView: UIView {
 
         profilePicture.widthAnchor == 50
         dateLabel.widthAnchor == 30
+
+        profilePicture.shouldRoundMakeRound = true
     }
 
-    func configureView(with user: UsersUIViewViewModel) {
+    func configureView(for user: UsersUIViewViewModel) {
         imageLoadinSubscriber = profilePicture.loadImageFrom(url: user.imageUrl)
-            .sink(receiveCompletion: ( {_ in} ), receiveValue: { (imageLoaded) in
+            .sink(receiveCompletion: ( { completion in
+                switch completion {
+                case .failure(let error):
+                    print("=== Some Error has happend \(error.localizedDescription) ===")
+                    self.profilePicture.image = UIImage(named: "user_placeholder")
+                    self.hideSkeleton()
+                case .finished:
+                    print("Success")
+                }
+            } ), receiveValue: { (imageLoaded) in
                 if !imageLoaded {
                     self.profilePicture.image = UIImage(named: "user_placeholder")
                 }

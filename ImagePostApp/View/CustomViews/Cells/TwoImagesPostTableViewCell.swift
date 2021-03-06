@@ -6,17 +6,88 @@
 //
 
 import UIKit
+import Anchorage
+import Combine
+import SkeletonView
 
 class TwoImagesPostTableViewCell: UITableViewCell {
+
+    enum Constants {
+        static let userViewHeight: CGFloat = 45.0
+        static let imageHeight: CGFloat = 300 * 0.5
+    }
+
     static let cellIdentifier = "TwoImagesPostTableViewCellID"
 
     // Properties
     var viewModel: PostCellViewModel?
+    var imagesLoadingSubscriber = Set<AnyCancellable>()
+    @Published private var loadedImages: Int = 0
     // Views
-    lazy var userView = PostUserView(frame: .zero)
+    var userView = PostUserView(frame: .zero)
+    var mainContainerStackView = UIStackView()
+    var leftImageView = UIImageView()
+    var rightImageView = UIImageView()
 
-    func bindTo(viewModel: PostCellViewModel) {
+    func configure(with viewModel: PostCellViewModel) {
+        userView.configureView(for: viewModel.userViewModel)
 
+        for (index, item) in viewModel.picturesUrls.enumerated() {
+            if index == viewModel.picturesUrls.startIndex {
+                leftImageView.loadImageFrom(url: item)
+                    .sink(receiveCompletion: { (completion) in
+                        switch completion {
+                        case .failure(let error):
+                            print("=== An Error has happend \(error.localizedDescription) ===")
+                            self.leftImageView.image = UIImage(named: "image_placeholder")
+                        case .finished:
+                            print("Success")
+                        }
+                    }, receiveValue: {[weak self] (imageLoaded) in
+                        guard let self = self else {return}
+                        if !imageLoaded {
+                            self.leftImageView.image = UIImage(named: "image_placeholder")
+                        }
+                    }).store(in: &imagesLoadingSubscriber)
+            } else if index == viewModel.picturesUrls.endIndex {
+                rightImageView.loadImageFrom(url: item)
+                    .sink(receiveCompletion: { (completion) in
+                        switch completion {
+                        case .failure(let error):
+                            print("=== An Error has happend \(error.localizedDescription) ===")
+                            self.rightImageView.image = UIImage(named: "image_placeholder")
+                        case .finished:
+                            print("Success")
+                        }
+                    }, receiveValue: {[weak self] (imageLoaded) in
+                        guard let self = self else {return}
+                        if !imageLoaded {
+                            self.rightImageView.image = UIImage(named: "image_placeholder")
+                        }
+                    }).store(in: &imagesLoadingSubscriber)
+            } else {
+                if viewModel.picturesUrls.count == 2 {
+                    fatalError("Y klk")
+                    // Be Back testing code
+                }
+                var cellName = ""
+                switch viewModel.picturesUrls.count {
+                case 1:
+                    cellName = "OneImagePostTableViewCell"
+                case 3:
+                    cellName = "ThreeImagesPostTableViewCell"
+                default:
+                    cellName = "FourOrMoreImagesPostTableViewCell"
+                }
+                fatalError("=== Error dequeued wrong cell has you cell should have \(viewModel.picturesUrls.count)  use = \(cellName) ")
+            }
+        }
+
+        $loadedImages.sink { (value) in
+            if value >= 2 {
+                self.hideSkeleton()
+            }
+        }.store(in: &imagesLoadingSubscriber)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -27,17 +98,33 @@ class TwoImagesPostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-
     // Private
     private func configure() {
+        mainContainerStackView.spacing = 12
 
+        isSkeletonable = true
+        mainContainerStackView.isSkeletonable = true
+        leftImageView.isSkeletonable = true
+        rightImageView.isSkeletonable = true
+        self.showGradientSkeleton()
     }
 
     private func buildInterface() {
+        addSubview(userView)
+        addSubview(mainContainerStackView)
 
+        mainContainerStackView.addArrangedSubview(leftImageView)
+        mainContainerStackView.addArrangedSubview(rightImageView)
     }
 
     private func displayDefaultLayout() {
+        userView.topAnchor == topAnchor
+        userView.horizontalAnchors == horizontalAnchors
+        userView.heightAnchor == Constants.userViewHeight
 
+        mainContainerStackView.topAnchor == userView.bottomAnchor + 12
+        mainContainerStackView.heightAnchor == Constants.imageHeight
+        mainContainerStackView.horizontalAnchors == horizontalAnchors
+        mainContainerStackView.bottomAnchor == bottomAnchor
     }
 }

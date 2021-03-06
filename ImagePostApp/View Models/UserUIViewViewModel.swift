@@ -8,7 +8,6 @@
 import Foundation
 
 struct UsersUIViewViewModel {
-    // var id: String = UUID().uuidString
     var name: String
     var email: String
     var imageUrl: String

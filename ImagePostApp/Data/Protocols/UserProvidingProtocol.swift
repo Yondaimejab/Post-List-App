@@ -8,6 +8,6 @@
 import Foundation
 import Combine
 
-protocol PostProviding {
-    func getAllPosts() -> AnyPublisher<[Post], Error>
+protocol UserProviding {
+    func getAllUsers() -> AnyPublisher<[User], Error>
 }
