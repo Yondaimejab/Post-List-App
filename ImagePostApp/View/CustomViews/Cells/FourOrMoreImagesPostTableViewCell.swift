@@ -36,10 +36,10 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     var userView = PostUserView(frame: .zero)
     let mainContainerStackView = UIStackView()
     var mainPostImage = UIImageView()
-    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    let collectionView = UICollectionView(frame: CGRect(origin: .zero, size: CGSize(width: 1000, height: 130)), collectionViewLayout: UICollectionViewLayout())
     var collectionViewLayout = UICollectionViewFlowLayout()
     var imagePresenterDelegate: ImagePresenter?
-
+    var containerForCollectionView = UIView()
     var imageList: [UIImageView] = []
 
     func configureView(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
@@ -109,6 +109,7 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
         $loadedImages.receive(on: DispatchQueue.main).sink { [weak self] (value) in
             guard let self = self else { return }
             if value == viewModel.picturesUrls.count {
+                self.collectionView.contentSize = CGSize(width: 1000, height: 130)
                 self.collectionView.reloadData()
                 self.hideSkeleton()
             }
@@ -154,6 +155,7 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
         collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.Constants.identifier)
         collectionView.isUserInteractionEnabled = true
         collectionView.isScrollEnabled = true
+        collectionView.clipsToBounds = false
         collectionViewLayout.estimatedItemSize = Constants.cellSize
         collectionViewLayout.scrollDirection = .horizontal
         collectionViewLayout.minimumInteritemSpacing = 12
@@ -161,26 +163,26 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     }
 
     private func buildInterface() {
-        addSubview(userView)
-        addSubview(mainContainerStackView)
+        contentView.addSubview(userView)
+        contentView.addSubview(mainContainerStackView)
 
         mainContainerStackView.addArrangedSubview(mainPostImage)
-        mainContainerStackView.addArrangedSubview(collectionView)
+        mainContainerStackView.addArrangedSubview(containerForCollectionView)
+        containerForCollectionView.addSubview(collectionView)
     }
 
     private func displayDefaultLayout() {
-        userView.topAnchor == topAnchor
-        userView.horizontalAnchors == horizontalAnchors
+        userView.topAnchor == contentView.topAnchor
+        userView.horizontalAnchors == contentView.horizontalAnchors
         userView.heightAnchor == Constants.userViewHeight
 
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
-        mainContainerStackView.widthAnchor == widthAnchor
-        mainContainerStackView.bottomAnchor == bottomAnchor - 10
+        mainContainerStackView.leadingAnchor == contentView.leadingAnchor
+        mainContainerStackView.trailingAnchor  == contentView.trailingAnchor
+        mainContainerStackView.bottomAnchor == contentView.bottomAnchor - 10
+        mainContainerStackView.heightAnchor == Constants.mainImageHeight + 12.0 + Constants.otherImagesHeight
         mainPostImage.heightAnchor == Constants.mainImageHeight
-        collectionView.heightAnchor == Constants.otherImagesHeight
-        collectionView.leadingAnchor == mainContainerStackView.leadingAnchor
-        collectionView.contentSize.width = 700
-        collectionView.bottomAnchor == mainContainerStackView.bottomAnchor
+        collectionView.contentSize = CGSize(width: 1000, height: 130)
     }
 }
 
@@ -197,7 +199,7 @@ extension FourOrMoreImagesPostTableViewCell: UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.Constants.identifier, for: indexPath)
         if let imageCell = cell as? ImageCollectionViewCell {
-            imageCell.configureView(with: self.imageList[indexPath.row].image)
+            imageCell.configureView(with: self.imageList[indexPath.row].image, delegate: imagePresenterDelegate)
         }
 
         return cell

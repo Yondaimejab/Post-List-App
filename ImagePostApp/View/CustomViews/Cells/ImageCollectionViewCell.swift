@@ -16,10 +16,18 @@ class ImageCollectionViewCell: UICollectionViewCell {
     }
 
     var imageView = UIImageView()
+    var imagePresenterDelegate: ImagePresenter?
 
-    func configureView(with tempImage: UIImage?) {
+    func configureView(with tempImage: UIImage?, delegate: ImagePresenter?) {
+        imagePresenterDelegate = delegate
         imageView.image = tempImage
         imageView.isUserInteractionEnabled = true
+    }
+
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else {return}
+        guard  let image = imageView.image else { return }
+        imagePresenterDelegate?.presentImageWithBlur(for: image)
     }
 
     override init(frame: CGRect) {
@@ -30,10 +38,6 @@ class ImageCollectionViewCell: UICollectionViewCell {
         displayDefaultLayout()
     }
 
-    override func prepareForReuse() {
-        imageView.gestureRecognizers?.removeAll()
-    }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -41,6 +45,9 @@ class ImageCollectionViewCell: UICollectionViewCell {
     private func configure() {
         self.backgroundColor = .red
         imageView.contentMode = .scaleToFill
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        imageView.addGestureRecognizer(tapGesture)
     }
 
     private func buildInterface() {
