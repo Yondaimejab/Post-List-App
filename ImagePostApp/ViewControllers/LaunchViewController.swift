@@ -11,7 +11,7 @@ class LaunchViewController: UIViewController {
 
     // Constants
     enum Constants {
-        static let startAnimationTime: Double = 10
+        static let startAnimationTime: Double = 1 //5
         static let homeSegue = "homeSegueIdentifier"
     }
 

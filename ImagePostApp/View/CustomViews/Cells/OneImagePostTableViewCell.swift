@@ -26,8 +26,11 @@ class OneImagePostTableViewCell: UITableViewCell {
     // Views
     var userView = PostUserView(frame: .zero)
     var postMainImage = UIImageView()
+    var imagePresenterDelegate: ImagePresenter?
 
-    func configure(with viewModel: PostCellViewModel) {
+    func configure(with viewModel: PostCellViewModel, delegete: ImagePresenter) {
+        imagePresenterDelegate = delegete
+        postMainImage.gestureRecognizers?.removeAll()
         userView.configureView(for: viewModel.userViewModel)
 
         guard let pictureUrl = viewModel.picturesUrls.first else {
@@ -51,6 +54,16 @@ class OneImagePostTableViewCell: UITableViewCell {
                 }
                 self.hideSkeleton()
             })
+
+        postMainImage.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        postMainImage.addGestureRecognizer(tapGesture)
+    }
+
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        if let image = postMainImage.image {
+            imagePresenterDelegate?.presentImageWithBlur(for: image)
+        }
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -69,9 +82,9 @@ class OneImagePostTableViewCell: UITableViewCell {
     private func configure() {
         isSkeletonable = true
         postMainImage.isSkeletonable = true
-        postMainImage.contentMode = .scaleAspectFit
+        postMainImage.contentMode = .scaleToFill
 
-        self.showGradientSkeleton()
+        self.showAnimatedGradientSkeleton()
     }
 
     private func buildInterface() {
@@ -87,6 +100,7 @@ class OneImagePostTableViewCell: UITableViewCell {
         postMainImage.topAnchor == userView.bottomAnchor + 12
         postMainImage.heightAnchor == Constants.imageHeight
         postMainImage.horizontalAnchors == horizontalAnchors
-        postMainImage.bottomAnchor == bottomAnchor
+        postMainImage.bottomAnchor == bottomAnchor - 10
     }
+
 }

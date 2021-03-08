@@ -8,8 +8,23 @@
 import Foundation
 
 struct Post: Codable {
-    var id: String
-    var data: Date
+    var id: Int
+    var date: String
     var pics: [String]
+    
+    init(id: Int, date: String, pics: [String]) {
+        self.id = id
+        self.date = date
+        self.pics = pics
+    }
+
+    func getData() -> [String: Any] {
+        let data: [String: Any] = [
+            "id": id,
+            "date": date,
+            "pics": pics
+        ]
+        return data
+    }
 }
 

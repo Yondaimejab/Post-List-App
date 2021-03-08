@@ -10,4 +10,5 @@ import Combine
 
 protocol UserProviding {
     func getAllUsers() -> AnyPublisher<[User], Error>
+    func refreshData() -> AnyPublisher<[User], Error>
 }

@@ -9,6 +9,7 @@ target 'ImagePostApp' do
   pod "Alamofire"
   pod "Anchorage"
   pod 'SkeletonView'
+  pod 'CouchbaseLite-Swift'
 
   target 'ImagePostAppTests' do
     inherit! :search_paths

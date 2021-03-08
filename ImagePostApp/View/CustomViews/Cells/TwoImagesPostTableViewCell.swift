@@ -29,7 +29,11 @@ class TwoImagesPostTableViewCell: UITableViewCell {
     var leftImageView = UIImageView()
     var rightImageView = UIImageView()
 
-    func configure(with viewModel: PostCellViewModel) {
+    var imagePresenterDelegate: ImagePresenter?
+
+    func configure(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
+        imagePresenterDelegate = delegate
+
         userView.configureView(for: viewModel.userViewModel)
 
         for (index, item) in viewModel.picturesUrls.enumerated() {
@@ -40,6 +44,7 @@ class TwoImagesPostTableViewCell: UITableViewCell {
                         case .failure(let error):
                             print("=== An Error has happend \(error.localizedDescription) ===")
                             self.leftImageView.image = UIImage(named: "image_placeholder")
+                            self.loadedImages += 1
                         case .finished:
                             print("Success")
                         }
@@ -48,14 +53,16 @@ class TwoImagesPostTableViewCell: UITableViewCell {
                         if !imageLoaded {
                             self.leftImageView.image = UIImage(named: "image_placeholder")
                         }
+                        self.loadedImages += 1
                     }).store(in: &imagesLoadingSubscriber)
-            } else if index == viewModel.picturesUrls.endIndex {
+            } else if index == (viewModel.picturesUrls.endIndex - 1) {
                 rightImageView.loadImageFrom(url: item)
                     .sink(receiveCompletion: { (completion) in
                         switch completion {
                         case .failure(let error):
                             print("=== An Error has happend \(error.localizedDescription) ===")
                             self.rightImageView.image = UIImage(named: "image_placeholder")
+                            self.loadedImages += 1
                         case .finished:
                             print("Success")
                         }
@@ -64,12 +71,9 @@ class TwoImagesPostTableViewCell: UITableViewCell {
                         if !imageLoaded {
                             self.rightImageView.image = UIImage(named: "image_placeholder")
                         }
+                        self.loadedImages += 1
                     }).store(in: &imagesLoadingSubscriber)
             } else {
-                if viewModel.picturesUrls.count == 2 {
-                    fatalError("Y klk")
-                    // Be Back testing code
-                }
                 var cellName = ""
                 switch viewModel.picturesUrls.count {
                 case 1:
@@ -90,8 +94,18 @@ class TwoImagesPostTableViewCell: UITableViewCell {
         }.store(in: &imagesLoadingSubscriber)
     }
 
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else {return}
+        guard  let image = imageView.image else { return }
+        imagePresenterDelegate?.presentImageWithBlur(for: image)
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        configure()
+        buildInterface()
+        displayDefaultLayout()
     }
 
     required init?(coder: NSCoder) {
@@ -101,12 +115,25 @@ class TwoImagesPostTableViewCell: UITableViewCell {
     // Private
     private func configure() {
         mainContainerStackView.spacing = 12
+        mainContainerStackView.axis = .horizontal
+        mainContainerStackView.distribution = .fillEqually
+
+        leftImageView.contentMode = .scaleToFill
+        rightImageView.contentMode = .scaleToFill
+        leftImageView.isUserInteractionEnabled = true
+        rightImageView.isUserInteractionEnabled = true
 
         isSkeletonable = true
         mainContainerStackView.isSkeletonable = true
         leftImageView.isSkeletonable = true
         rightImageView.isSkeletonable = true
-        self.showGradientSkeleton()
+        self.showAnimatedGradientSkeleton()
+
+
+        let leftImagetapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        let rightImagetapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        leftImageView.addGestureRecognizer(leftImagetapGesture)
+        rightImageView.addGestureRecognizer(rightImagetapGesture)
     }
 
     private func buildInterface() {
@@ -125,6 +152,6 @@ class TwoImagesPostTableViewCell: UITableViewCell {
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
         mainContainerStackView.heightAnchor == Constants.imageHeight
         mainContainerStackView.horizontalAnchors == horizontalAnchors
-        mainContainerStackView.bottomAnchor == bottomAnchor
+        mainContainerStackView.bottomAnchor == bottomAnchor - 10
     }
 }

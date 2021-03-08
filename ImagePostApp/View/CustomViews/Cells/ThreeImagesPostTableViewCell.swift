@@ -32,7 +32,10 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
     var leftImageView = UIImageView()
     var rightImageView = UIImageView()
 
-    func configure(with viewModel: PostCellViewModel) {
+    var imagePresenterDelegate: ImagePresenter?
+
+    func configure(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
+        imagePresenterDelegate = delegate
         imagesLoadingSubscriber.removeAll()
 
         userView.configureView(for: viewModel.userViewModel)
@@ -76,14 +79,24 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
         }
 
         $loadedImages.sink { (value) in
-            if value >= 3 {
+            if value == 3 {
                 self.hideSkeleton()
             }
         }.store(in: &imagesLoadingSubscriber)
     }
 
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else {return}
+        guard  let image = imageView.image else { return }
+        imagePresenterDelegate?.presentImageWithBlur(for: image)
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        configure()
+        buildInterface()
+        displayDefaultLayout()
     }
 
     required init?(coder: NSCoder) {
@@ -93,7 +106,17 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
     // Private
     private func configure() {
         mainContainerStackView.spacing = 12
+        mainContainerStackView.axis = .vertical
         secondaryContainerStackView.spacing = 12
+        secondaryContainerStackView.axis = .horizontal
+        secondaryContainerStackView.distribution = .fillEqually
+
+        [mainPostImage, leftImageView, rightImageView].forEach({ (item) in
+            item.contentMode = .scaleToFill
+            item.isUserInteractionEnabled = true
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+            item.addGestureRecognizer(gesture)
+        })
 
         isSkeletonable = true
         mainContainerStackView.isSkeletonable = true
@@ -119,7 +142,7 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
 
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
         mainContainerStackView.horizontalAnchors == horizontalAnchors
-        mainContainerStackView.bottomAnchor == bottomAnchor
+        mainContainerStackView.bottomAnchor == bottomAnchor - 10
 
         mainPostImage.heightAnchor == Constants.mainImageHeight
         secondaryContainerStackView.heightAnchor == Constants.otherImagesHeight

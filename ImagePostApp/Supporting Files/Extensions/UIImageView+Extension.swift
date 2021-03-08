@@ -19,21 +19,23 @@ extension UIImageView {
 
     func loadImageFrom(url: String) -> Future<Bool, Error> {
         let publisher = Future<Bool, Error> { promise in
-            if let url = URL(string: url) {
-                if let data = try? Data(contentsOf: url) {
-                    if let imageResult = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            self.image = imageResult
-                            promise(.success(true))
+            DispatchQueue.global().async {
+                if let url = URL(string: url) {
+                    if let data = try? Data(contentsOf: url) {
+                        if let imageResult = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                self.image = imageResult
+                                promise(.success(true))
+                            }
+                        } else {
+                            promise(.failure(ImageLoadingError.imageConvertionError))
                         }
                     } else {
-                        promise(.failure(ImageLoadingError.imageConvertionError))
+                        promise(.failure(ImageLoadingError.retriveImageError))
                     }
                 } else {
-                    promise(.failure(ImageLoadingError.retriveImageError))
+                    promise(.failure(ImageLoadingError.invalidURL))
                 }
-            } else {
-                promise(.failure(ImageLoadingError.invalidURL))
             }
         }
         return publisher

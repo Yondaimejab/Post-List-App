@@ -12,13 +12,20 @@ import SkeletonView
 
 class FourOrMoreImagesPostTableViewCell: UITableViewCell {
 
+    enum Sections {
+        case main
+    }
+
+    typealias ImagesDataSource = UICollectionViewDiffableDataSource<Sections, UIImageView>
+
     enum Constants {
         static let userViewHeight: CGFloat = 45.0
         static let mainImageHeight: CGFloat = 300.0
         static let otherImagesHeight: CGFloat = 130.0
+        static let cellSize = CGSize(width: 130.0, height: 80.0)
     }
 
-    static let cellIdentifier = "ThreeImagesPostTableViewCellID"
+    static let cellIdentifier = "FourImagesPostTableViewCellID"
 
     // Properties
     var viewModel: PostCellViewModel?
@@ -28,11 +35,15 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     // Views
     var userView = PostUserView(frame: .zero)
     let mainContainerStackView = UIStackView()
-    let mainPostImage = UIImageView()
-    let scrollView = UIScrollView()
-    let scrollViewContentStackView = UIStackView()
+    var mainPostImage = UIImageView()
+    let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    var collectionViewLayout = UICollectionViewFlowLayout()
+    var imagePresenterDelegate: ImagePresenter?
 
-    func bindTo(viewModel: PostCellViewModel) {
+    var imageList: [UIImageView] = []
+
+    func configureView(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
+        imagePresenterDelegate = delegate
         imagesLoadingSubscriber.removeAll()
 
         userView.configureView(for: viewModel.userViewModel)
@@ -50,9 +61,29 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
             fatalError("=== Error dequeued wrong cell has you cell should have \(viewModel.picturesUrls.count)  use = \(cellName) ")
         }
 
-        for index in 0..<viewModel.picturesUrls.count {
+        guard let firsImageUrl = viewModel.picturesUrls.first else {return}
+        mainPostImage.loadImageFrom(url: firsImageUrl)
+            .sink(receiveCompletion: {[weak self] (completion) in
+                switch completion {
+                case .failure(let error):
+                    print("=== An Error has happend \(error.localizedDescription) ===")
+                    self?.mainPostImage.image = UIImage(named: "image_placeholder")
+                    self?.loadedImages += 1
+                case .finished:
+                    print("Success")
+                }
+            }, receiveValue: { [weak self] (imageLoaded) in
+                guard let self = self else {return}
+                if !imageLoaded {
+                    self.mainPostImage.image = UIImage(named: "image_placeholder")
+                }
+                self.loadedImages += 1
+            }).store(in: &imagesLoadingSubscriber)
 
-            let imageView = index == 0 ? mainPostImage : UIImageView()
+
+        for index in 1..<viewModel.picturesUrls.count {
+
+            let imageView = UIImageView()
 
             imageView.loadImageFrom(url: viewModel.picturesUrls[index])
                 .sink(receiveCompletion: {[weak self] (completion) in
@@ -71,20 +102,39 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
                     }
                     self.loadedImages += 1
                 }).store(in: &imagesLoadingSubscriber)
+
+            imageList.append(imageView)
         }
 
-        $loadedImages.sink { [weak self] (value) in
+        $loadedImages.receive(on: DispatchQueue.main).sink { [weak self] (value) in
             guard let self = self else { return }
-            if value >= viewModel.picturesUrls.count {
-                self.scrollView.contentSize = self.scrollViewContentStackView.frame.size
+            if value == viewModel.picturesUrls.count {
+                self.collectionView.reloadData()
                 self.hideSkeleton()
             }
         }.store(in: &imagesLoadingSubscriber)
         
     }
 
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else {return}
+        guard  let image = imageView.image else { return }
+        imagePresenterDelegate?.presentImageWithBlur(for: image)
+    }
+
+    override func prepareForReuse() {
+        loadedImages = 0
+        imageList = []
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        configure()
+        buildInterface()
+        displayDefaultLayout()
     }
 
     required init?(coder: NSCoder) {
@@ -96,8 +146,18 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
         mainContainerStackView.spacing = 12
         mainContainerStackView.axis = .vertical
 
-        scrollViewContentStackView.spacing = 12
-        scrollViewContentStackView.axis = .horizontal
+        mainPostImage.contentMode = .scaleToFill
+        collectionView.backgroundColor = .white
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        mainPostImage.addGestureRecognizer(tapGesture)
+        mainPostImage.isUserInteractionEnabled = true
+        collectionView.register(ImageCollectionViewCell.self, forCellWithReuseIdentifier: ImageCollectionViewCell.Constants.identifier)
+        collectionView.isUserInteractionEnabled = true
+        collectionView.isScrollEnabled = true
+        collectionViewLayout.estimatedItemSize = Constants.cellSize
+        collectionViewLayout.scrollDirection = .horizontal
+        collectionViewLayout.minimumInteritemSpacing = 12
+        collectionView.collectionViewLayout = collectionViewLayout
     }
 
     private func buildInterface() {
@@ -105,9 +165,7 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
         addSubview(mainContainerStackView)
 
         mainContainerStackView.addArrangedSubview(mainPostImage)
-        mainContainerStackView.addArrangedSubview(scrollView)
-
-        scrollView.addSubview(scrollViewContentStackView)
+        mainContainerStackView.addArrangedSubview(collectionView)
     }
 
     private func displayDefaultLayout() {
@@ -116,13 +174,36 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
         userView.heightAnchor == Constants.userViewHeight
 
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
-        mainContainerStackView.horizontalAnchors == horizontalAnchors
-        mainContainerStackView.bottomAnchor == bottomAnchor
-
+        mainContainerStackView.widthAnchor == widthAnchor
+        mainContainerStackView.bottomAnchor == bottomAnchor - 10
         mainPostImage.heightAnchor == Constants.mainImageHeight
-        scrollView.heightAnchor == Constants.otherImagesHeight
-        scrollViewContentStackView.edgeAnchors == scrollView.edgeAnchors
+        collectionView.heightAnchor == Constants.otherImagesHeight
+        collectionView.leadingAnchor == mainContainerStackView.leadingAnchor
+        collectionView.contentSize.width = 700
+        collectionView.bottomAnchor == mainContainerStackView.bottomAnchor
+    }
+}
 
-        scrollView.contentSize = scrollViewContentStackView.frame.size
+extension FourOrMoreImagesPostTableViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.imageList.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCollectionViewCell.Constants.identifier, for: indexPath)
+        if let imageCell = cell as? ImageCollectionViewCell {
+            imageCell.configureView(with: self.imageList[indexPath.row].image)
+        }
+
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return Constants.cellSize
     }
 }
