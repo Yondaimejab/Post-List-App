@@ -14,7 +14,7 @@ class UserProvider: UserProviding {
     static var shared = UserProvider()
     private var localUserProvider: LocalDbUserProviding?
     private var requestSubscriber: AnyCancellable?
-    private var localSaveSubcriber: AnyCancellable?
+    private var localSaveSubscriber: AnyCancellable?
     private var localUsersSubscriber: AnyCancellable?
     private var localStorageHasData: Bool = false
 
@@ -24,7 +24,7 @@ class UserProvider: UserProviding {
     }
 
     func validate() {
-        localSaveSubcriber = localUserProvider?.validateUserExist().sink(receiveValue: { (hasValues) in
+        localSaveSubscriber = localUserProvider?.validateUserExist().sink(receiveValue: { (hasValues) in
             self.localStorageHasData = hasValues
         })
     }
@@ -42,19 +42,13 @@ class UserProvider: UserProviding {
         // Validate internet connection
         if let networkManager = NetworkReachabilityManager() {
             if networkManager.isReachable {
-                if !localStorageHasData {
-                    return getUsersFromWeb()
-                }else {
-                    return getUserListFromLocalDb()
-                }
+                guard localStorageHasData else { return getUsersFromWeb() }
+                return getUserListFromLocalDb()
             } else {
-                if localStorageHasData {
-                    return getUserListFromLocalDb()
-                } else {
-                    return Future<[User], Error> {
-                        promise in promise(.failure(PostRequestError.noInternetOrLocalData))
-                    }.eraseToAnyPublisher()
-                }
+                guard !localStorageHasData else { return getUserListFromLocalDb() }
+                return Future<[User], Error> {
+                    promise in promise(.failure(PostRequestError.noInternetOrLocalData))
+                }.eraseToAnyPublisher()
             }
         } else {
             return Future<[User], Error> { promise in
@@ -69,27 +63,19 @@ class UserProvider: UserProviding {
             guard let url = URL(string: Routes.baseUrl.rawValue + endPoint.rawValue) else {
                 return promise(.failure(PostRequestError.loadingFailed))
             }
-
             self.requestSubscriber = AF.request(url, method: .get)
                 .publishData()
                 .compactMap({ (response) -> Data? in
-                    if let data = response.data {
-                        if let object = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves) as? [String: Any] {
-                            if let dict = object["data"] as? [[String: Any]] {
-                                if let jsonData = try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted) {
-                                    return jsonData
-                                }
-                            }
-                        }
-                    }
-                    return nil
+                    guard let data = response.data else { return nil }
+                    let jsonObject = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+                    guard let jsonDictionary = jsonObject as? [String: Any] else { return nil }
+                    guard let dict = jsonDictionary["data"] as? [[String: Any]] else { return nil }
+                    return try? JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
                 }).decode(type: [User].self, decoder: JSONDecoder())
                 .sink(receiveCompletion: { (completion) in
                     switch completion {
-                    case .failure(let error):
-                        promise(.failure(error))
-                    case .finished:
-                        print("Success")
+                    case .failure(let error): promise(.failure(error))
+                    case .finished: print("Success")
                     }
                 }, receiveValue: { (users) in
                     let userList = users.removeAnyDuplicates()
@@ -100,7 +86,7 @@ class UserProvider: UserProviding {
     }
 
     private func saveUsersToLocalDb(users: [User]) {
-        localSaveSubcriber = localUserProvider?.saveUsers(users: users)
+        localSaveSubscriber = localUserProvider?.saveUsers(users: users)
             .sink(receiveValue: { (didSave) in
                 if !didSave {
                     print("error has happend")
@@ -111,10 +97,7 @@ class UserProvider: UserProviding {
     }
 
     private func getUserListFromLocalDb() -> AnyPublisher<[User], Error> {
-        if let userPublisher = localUserProvider?.getUsers() {
-            return userPublisher
-        }
-
+        if let userPublisher = localUserProvider?.getUsers() { return userPublisher }
         return Future<[User], Error> { promise in
             promise(.failure(PostRequestError.noLocalDbFound))
         }.eraseToAnyPublisher()
@@ -122,19 +105,14 @@ class UserProvider: UserProviding {
 
     func refreshData() -> AnyPublisher<[User], Error> {
         if let networkManager = NetworkReachabilityManager() {
-            if networkManager.isReachable {
-                return getUsersFromWeb()
-            } else {
-                return Future<[User], Error> {
-                    promise in promise(.failure(PostRequestError.noInternetConnection))
-                }.eraseToAnyPublisher()
-            }
-        } else {
-            return Future<[User], Error> { promise in
-                promise(.failure(PostRequestError.alamofireReachabilityError))
-
+            guard !networkManager.isReachable else { return getUsersFromWeb() }
+            return Future<[User], Error> {
+                promise in promise(.failure(PostRequestError.noInternetConnection))
             }.eraseToAnyPublisher()
         }
+        return Future<[User], Error> { promise in
+            promise(.failure(PostRequestError.alamofireReachabilityError))
+        }.eraseToAnyPublisher()
     }
 }
 

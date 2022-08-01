@@ -9,7 +9,7 @@ import Foundation
 
 extension String {
     var date: Date {
-        let dateFormatter = Date.Formatters.colombia
+        let dateFormatter = Date.Formatters.longColombia
         dateFormatter.locale = Locale(identifier: "en_CO")
         let newDateString = self.replacingOccurrences(of: "GMT-0500 (Colombia Standard Time)", with: "")
         let resultingDate = dateFormatter.date(from: newDateString)

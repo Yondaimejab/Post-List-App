@@ -37,66 +37,43 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
     func configure(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
         imagePresenterDelegate = delegate
         imagesLoadingSubscriber.removeAll()
-
         userView.configureView(for: viewModel.userViewModel)
-
         guard viewModel.picturesUrls.count == 3 else {
-            var cellName = ""
-            switch viewModel.picturesUrls.count {
-            case 1:
-                cellName = "OneImagePostTableViewCell"
-            case 2:
-                cellName = "TwoImagesPostTableViewCell"
-            default:
-                cellName = "FourOrMoreImagesPostTableViewCell"
-            }
-            fatalError("=== Error dequeued wrong cell has you cell should have \(viewModel.picturesUrls.count)  use = \(cellName) ")
+            fatalError("= dequeued wrong cell should \(Self.cellIdentifier)")
         }
-
         var newDict: [Int: UIImageView] = [:]
         newDict[0] = mainPostImage
         newDict[1] = leftImageView
         newDict[2] = rightImageView
-
         for (key, imageView) in newDict {
             imageView.loadImageFrom(url: viewModel.picturesUrls[key])
-                .sink(receiveCompletion: {[weak self] (completion) in
+                .sink(receiveCompletion: { completion in
                     switch completion {
-                    case .failure(let error):
-                        print("=== An Error has happend \(error.localizedDescription) ===")
-                        imageView.image = UIImage(named: "image_placeholder")
-                        self?.loadedImages += 1
-                    case .finished:
-                        print("Success")
+                    case .failure(let error): print("=== \(error.localizedDescription) ===")
+                    case .finished: print("Success")
                     }
                 }, receiveValue: { [weak self] (imageLoaded) in
-                    guard let self = self else {return}
-                    if !imageLoaded {
-                        imageView.image = UIImage(named: "image_placeholder")
-                    }
+                    guard let self = self else { return }
+                    if !imageLoaded { imageView.image = .placeholder }
                     self.loadedImages += 1
                 }).store(in: &imagesLoadingSubscriber)
         }
-
-        $loadedImages.sink { (value) in
-            if value == 3 {
-                self.hideSkeleton()
-            }
-        }.store(in: &imagesLoadingSubscriber)
+        $loadedImages.sink { if $0 == 3 { self.hideSkeleton() } }.store(in: &imagesLoadingSubscriber)
     }
 
     @objc func imageTapped(gesture: UITapGestureRecognizer) {
-        guard let imageView = gesture.view as? UIImageView else {return}
-        guard  let image = imageView.image else { return }
-        imagePresenterDelegate?.presentImageWithBlur(for: image)
+        guard let imageView = gesture.view as? UIImageView else { return }
+        imagePresenterDelegate?.presentImageViewWithBlur(imageView)
+//        guard let image = imageView.image else { return }
+//        imagePresenterDelegate?.presentImageWithBlur(for: image)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         configure()
         buildInterface()
         displayDefaultLayout()
+        showGradientSkeleton()
     }
 
     required init?(coder: NSCoder) {
@@ -105,30 +82,29 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
 
     // Private
     private func configure() {
+        isSkeletonable = true
+        mainContainerStackView.isSkeletonable = true
+        secondaryContainerStackView.isSkeletonable = true
         mainContainerStackView.spacing = 12
         mainContainerStackView.axis = .vertical
         secondaryContainerStackView.spacing = 12
         secondaryContainerStackView.axis = .horizontal
         secondaryContainerStackView.distribution = .fillEqually
-
         [mainPostImage, leftImageView, rightImageView].forEach({ (item) in
             item.contentMode = .scaleToFill
             item.isUserInteractionEnabled = true
+            item.isSkeletonable = true
+            item.clipsToBounds = true
+            item.layer.maskedCorners = .allCorners
+            item.layer.cornerRadius = 12.0
             let gesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
             item.addGestureRecognizer(gesture)
         })
-
-        isSkeletonable = true
-        mainContainerStackView.isSkeletonable = true
-        leftImageView.isSkeletonable = true
-        rightImageView.isSkeletonable = true
-        self.showGradientSkeleton()
     }
 
     private func buildInterface() {
-        addSubview(userView)
-        addSubview(mainContainerStackView)
-
+        contentView.addSubview(userView)
+        contentView.addSubview(mainContainerStackView)
         mainContainerStackView.addArrangedSubview(mainPostImage)
         mainContainerStackView.addArrangedSubview(secondaryContainerStackView)
         secondaryContainerStackView.addArrangedSubview(leftImageView)
@@ -136,14 +112,12 @@ class ThreeImagesPostTableViewCell: UITableViewCell {
     }
 
     private func displayDefaultLayout() {
-        userView.topAnchor == topAnchor
-        userView.horizontalAnchors == horizontalAnchors
+        userView.topAnchor == contentView.topAnchor
+        userView.horizontalAnchors == contentView.horizontalAnchors
         userView.heightAnchor == Constants.userViewHeight
-
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
-        mainContainerStackView.horizontalAnchors == horizontalAnchors
-        mainContainerStackView.bottomAnchor == bottomAnchor - 10
-
+        mainContainerStackView.horizontalAnchors == contentView.horizontalAnchors
+        mainContainerStackView.bottomAnchor == contentView.bottomAnchor - 10
         mainPostImage.heightAnchor == Constants.mainImageHeight
         secondaryContainerStackView.heightAnchor == Constants.otherImagesHeight
     }

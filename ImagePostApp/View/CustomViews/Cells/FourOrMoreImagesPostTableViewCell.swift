@@ -45,32 +45,16 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     func configureView(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
         imagePresenterDelegate = delegate
         imagesLoadingSubscriber.removeAll()
-
         userView.configureView(for: viewModel.userViewModel)
-
         guard viewModel.picturesUrls.count > 3 else {
-            var cellName = ""
-            switch viewModel.picturesUrls.count {
-            case 1:
-                cellName = "OneImagePostTableViewCell"
-            case 2:
-                cellName = "TwoImagesPostTableViewCell"
-            default:
-                cellName = "ThreeImagesPostTableViewCell"
-            }
-            fatalError("=== Error dequeued wrong cell has you cell should have \(viewModel.picturesUrls.count)  use = \(cellName) ")
+            fatalError("=== Error dequeued wrong cell use \(Self.cellIdentifier) ")
         }
-
         guard let firsImageUrl = viewModel.picturesUrls.first else {return}
         mainPostImage.loadImageFrom(url: firsImageUrl)
             .sink(receiveCompletion: {[weak self] (completion) in
                 switch completion {
-                case .failure(let error):
-                    print("=== An Error has happend \(error.localizedDescription) ===")
-                    self?.mainPostImage.image = UIImage(named: "image_placeholder")
-                    self?.loadedImages += 1
-                case .finished:
-                    print("Success")
+                case .failure(let error): print("=== An Error has happend \(error.localizedDescription) ===")
+                case .finished: print("Success")
                 }
             }, receiveValue: { [weak self] (imageLoaded) in
                 guard let self = self else {return}
@@ -79,37 +63,27 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
                 }
                 self.loadedImages += 1
             }).store(in: &imagesLoadingSubscriber)
-
-
         for index in 1..<viewModel.picturesUrls.count {
 
             let imageView = UIImageView()
 
             imageView.loadImageFrom(url: viewModel.picturesUrls[index])
-                .sink(receiveCompletion: {[weak self] (completion) in
+                .sink(receiveCompletion: { completion in
                     switch completion {
-                    case .failure(let error):
-                        print("=== An Error has happend \(error.localizedDescription) ===")
-                        imageView.image = UIImage(named: "image_placeholder")
-                        self?.loadedImages += 1
-                    case .finished:
-                        print("Success")
+                    case .failure(let error): print("=== \(error.localizedDescription) ===")
+                    case .finished: print("Success")
                     }
                 }, receiveValue: { [weak self] (imageLoaded) in
                     guard let self = self else {return}
-                    if !imageLoaded {
-                        imageView.image = UIImage(named: "image_placeholder")
-                    }
+                    if !imageLoaded { imageView.image = .placeholder }
                     self.loadedImages += 1
                 }).store(in: &imagesLoadingSubscriber)
-
             imageList.append(imageView)
         }
-
         $loadedImages.receive(on: DispatchQueue.main).sink { [weak self] (value) in
             guard let self = self else { return }
             if value == viewModel.picturesUrls.count {
-                self.collectionView.contentSize = CGSize(width: 1000, height: 130)
+                self.collectionView.contentSize = CGSize(width: self.loadedImages * Int(200.0), height: 130)
                 self.collectionView.reloadData()
                 self.hideSkeleton()
             }
@@ -118,9 +92,10 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     }
 
     @objc func imageTapped(gesture: UITapGestureRecognizer) {
-        guard let imageView = gesture.view as? UIImageView else {return}
-        guard  let image = imageView.image else { return }
-        imagePresenterDelegate?.presentImageWithBlur(for: image)
+        guard let imageView = gesture.view as? UIImageView else { return }
+        imagePresenterDelegate?.presentImageViewWithBlur(imageView)
+//        guard let image = imageView.image else { return }
+//        imagePresenterDelegate?.presentImageWithBlur(for: image)
     }
 
     override func prepareForReuse() {
@@ -130,7 +105,6 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         collectionView.dataSource = self
         collectionView.delegate = self
         configure()
@@ -146,8 +120,10 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     private func configure() {
         mainContainerStackView.spacing = 12
         mainContainerStackView.axis = .vertical
-
         mainPostImage.contentMode = .scaleToFill
+        mainPostImage.clipsToBounds = true
+        mainPostImage.layer.maskedCorners = .allCorners
+        mainPostImage.layer.cornerRadius = 12.0
         collectionView.backgroundColor = .white
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
         mainPostImage.addGestureRecognizer(tapGesture)
@@ -165,7 +141,6 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
     private func buildInterface() {
         contentView.addSubview(userView)
         contentView.addSubview(mainContainerStackView)
-
         mainContainerStackView.addArrangedSubview(mainPostImage)
         mainContainerStackView.addArrangedSubview(containerForCollectionView)
         containerForCollectionView.addSubview(collectionView)
@@ -178,11 +153,13 @@ class FourOrMoreImagesPostTableViewCell: UITableViewCell {
 
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
         mainContainerStackView.leadingAnchor == contentView.leadingAnchor
-        mainContainerStackView.trailingAnchor  == contentView.trailingAnchor
+        mainContainerStackView.trailingAnchor == contentView.trailingAnchor
         mainContainerStackView.bottomAnchor == contentView.bottomAnchor - 10
         mainContainerStackView.heightAnchor == Constants.mainImageHeight + 12.0 + Constants.otherImagesHeight
         mainPostImage.heightAnchor == Constants.mainImageHeight
-        collectionView.contentSize = CGSize(width: 1000, height: 130)
+        containerForCollectionView.widthAnchor == contentView.widthAnchor
+        let collectionWidth = CGFloat(viewModel?.picturesUrls.count ?? 5) * 200.0
+        collectionView.contentSize = CGSize(width: collectionWidth, height: 130)
     }
 }
 

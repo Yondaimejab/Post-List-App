@@ -33,79 +33,36 @@ class TwoImagesPostTableViewCell: UITableViewCell {
 
     func configure(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
         imagePresenterDelegate = delegate
-
         userView.configureView(for: viewModel.userViewModel)
-
-        for (index, item) in viewModel.picturesUrls.enumerated() {
-            if index == viewModel.picturesUrls.startIndex {
-                leftImageView.loadImageFrom(url: item)
-                    .sink(receiveCompletion: { (completion) in
-                        switch completion {
-                        case .failure(let error):
-                            print("=== An Error has happend \(error.localizedDescription) ===")
-                            self.leftImageView.image = UIImage(named: "image_placeholder")
-                            self.loadedImages += 1
-                        case .finished:
-                            print("Success")
-                        }
-                    }, receiveValue: {[weak self] (imageLoaded) in
-                        guard let self = self else {return}
-                        if !imageLoaded {
-                            self.leftImageView.image = UIImage(named: "image_placeholder")
-                        }
-                        self.loadedImages += 1
-                    }).store(in: &imagesLoadingSubscriber)
-            } else if index == (viewModel.picturesUrls.endIndex - 1) {
-                rightImageView.loadImageFrom(url: item)
-                    .sink(receiveCompletion: { (completion) in
-                        switch completion {
-                        case .failure(let error):
-                            print("=== An Error has happend \(error.localizedDescription) ===")
-                            self.rightImageView.image = UIImage(named: "image_placeholder")
-                            self.loadedImages += 1
-                        case .finished:
-                            print("Success")
-                        }
-                    }, receiveValue: {[weak self] (imageLoaded) in
-                        guard let self = self else {return}
-                        if !imageLoaded {
-                            self.rightImageView.image = UIImage(named: "image_placeholder")
-                        }
-                        self.loadedImages += 1
-                    }).store(in: &imagesLoadingSubscriber)
-            } else {
-                var cellName = ""
-                switch viewModel.picturesUrls.count {
-                case 1:
-                    cellName = "OneImagePostTableViewCell"
-                case 3:
-                    cellName = "ThreeImagesPostTableViewCell"
-                default:
-                    cellName = "FourOrMoreImagesPostTableViewCell"
-                }
-                fatalError("=== Error dequeued wrong cell has you cell should have \(viewModel.picturesUrls.count)  use = \(cellName) ")
+        viewModel.picturesUrls.enumerated().forEach { index, item in
+            var imageView: UIImageView
+            let isStartIndex = index == viewModel.picturesUrls.startIndex
+            let isEndIndex = index == (viewModel.picturesUrls.endIndex - 1)
+            guard isStartIndex || isEndIndex else {
+                fatalError("=== Error dequeued wrong cell use = \(Self.cellIdentifier) ===")
             }
+            imageView = isEndIndex ? leftImageView : rightImageView
+            imageView.loadImageFrom(url: item)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .failure(let error): print("=== \(error.localizedDescription) ===")
+                    case .finished:print("Success")
+                    }
+                }, receiveValue: { [weak self] (imageLoaded) in
+                    guard let self = self else {return}
+                    guard imageLoaded else { return self.leftImageView.image = .placeholder }
+                    self.loadedImages += 1
+                }).store(in: &imagesLoadingSubscriber)
         }
-
-        $loadedImages.sink { (value) in
-            if value >= 2 {
-                self.hideSkeleton()
-            }
-        }.store(in: &imagesLoadingSubscriber)
-    }
-
-    @objc func imageTapped(gesture: UITapGestureRecognizer) {
-        guard let imageView = gesture.view as? UIImageView else {return}
-        guard  let image = imageView.image else { return }
-        imagePresenterDelegate?.presentImageWithBlur(for: image)
+        $loadedImages.sink { if $0 >= 2 { self.hideSkeleton() } }.store(in: &imagesLoadingSubscriber)
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         configure()
         buildInterface()
         displayDefaultLayout()
+        showAnimatedGradientSkeleton()
     }
 
     required init?(coder: NSCoder) {
@@ -114,44 +71,50 @@ class TwoImagesPostTableViewCell: UITableViewCell {
 
     // Private
     private func configure() {
-        mainContainerStackView.spacing = 12
-        mainContainerStackView.axis = .horizontal
-        mainContainerStackView.distribution = .fillEqually
-
-        leftImageView.contentMode = .scaleToFill
-        rightImageView.contentMode = .scaleToFill
-        leftImageView.isUserInteractionEnabled = true
-        rightImageView.isUserInteractionEnabled = true
-
         isSkeletonable = true
         mainContainerStackView.isSkeletonable = true
         leftImageView.isSkeletonable = true
         rightImageView.isSkeletonable = true
-        self.showAnimatedGradientSkeleton()
-
-
-        let leftImagetapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
-        let rightImagetapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
-        leftImageView.addGestureRecognizer(leftImagetapGesture)
-        rightImageView.addGestureRecognizer(rightImagetapGesture)
+        mainContainerStackView.spacing = 12
+        mainContainerStackView.axis = .horizontal
+        mainContainerStackView.distribution = .fillEqually
+        leftImageView.contentMode = .scaleToFill
+        leftImageView.clipsToBounds = true
+        leftImageView.layer.maskedCorners = .allCorners
+        leftImageView.layer.cornerRadius = 12.0
+        rightImageView.contentMode = .scaleToFill
+        rightImageView.clipsToBounds = true
+        rightImageView.layer.maskedCorners = .allCorners
+        rightImageView.layer.cornerRadius = 12.0
+        let action = #selector(imageTapped(gesture:))
+        leftImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: action))
+        rightImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: action))
+        leftImageView.isUserInteractionEnabled = true
+        rightImageView.isUserInteractionEnabled = true
     }
 
     private func buildInterface() {
-        addSubview(userView)
-        addSubview(mainContainerStackView)
-
+        contentView.addSubview(userView)
+        contentView.addSubview(mainContainerStackView)
         mainContainerStackView.addArrangedSubview(leftImageView)
         mainContainerStackView.addArrangedSubview(rightImageView)
     }
 
     private func displayDefaultLayout() {
-        userView.topAnchor == topAnchor
-        userView.horizontalAnchors == horizontalAnchors
+        userView.topAnchor == contentView.topAnchor
+        userView.horizontalAnchors == contentView.horizontalAnchors
         userView.heightAnchor == Constants.userViewHeight
-
         mainContainerStackView.topAnchor == userView.bottomAnchor + 12
         mainContainerStackView.heightAnchor == Constants.imageHeight
-        mainContainerStackView.horizontalAnchors == horizontalAnchors
-        mainContainerStackView.bottomAnchor == bottomAnchor - 10
+        mainContainerStackView.leadingAnchor == contentView.leadingAnchor + 12
+        mainContainerStackView.trailingAnchor == contentView.trailingAnchor
+        mainContainerStackView.bottomAnchor == contentView.bottomAnchor - 10
+    }
+    
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else { return }
+        imagePresenterDelegate?.presentImageViewWithBlur(imageView)
+//        guard let image = imageView.image else { return }
+//        imagePresenterDelegate?.presentImageWithBlur(for: image)
     }
 }

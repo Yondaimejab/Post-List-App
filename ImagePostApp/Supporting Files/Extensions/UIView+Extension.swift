@@ -34,4 +34,20 @@ extension UIView {
             }
         }
     }
+    
+    var originInLastSuperView: CGPoint {
+        var x = frame.origin.x
+        var y = frame.origin.y
+        var newSuperView = self.superview
+        while newSuperView != nil {
+            x += newSuperView?.frame.origin.x ?? 0.0
+            y += newSuperView?.frame.origin.y ?? 0.0
+            newSuperView = newSuperView?.superview
+        }
+        return CGPoint(x: x, y: y)
+    }
+}
+
+extension UIImage {
+    static var placeholder = UIImage(named: "image_placeholder")
 }

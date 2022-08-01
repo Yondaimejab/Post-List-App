@@ -24,15 +24,8 @@ class ImageCollectionViewCell: UICollectionViewCell {
         imageView.isUserInteractionEnabled = true
     }
 
-    @objc func imageTapped(gesture: UITapGestureRecognizer) {
-        guard let imageView = gesture.view as? UIImageView else {return}
-        guard  let image = imageView.image else { return }
-        imagePresenterDelegate?.presentImageWithBlur(for: image)
-    }
-
     override init(frame: CGRect) {
         super.init(frame: frame)
-
         configure()
         buildInterface()
         displayDefaultLayout()
@@ -45,18 +38,29 @@ class ImageCollectionViewCell: UICollectionViewCell {
     private func configure() {
         self.backgroundColor = .red
         imageView.contentMode = .scaleToFill
-
+        imageView.isSkeletonable = true
+        imageView.clipsToBounds = true
+        imageView.layer.maskedCorners = .allCorners
+        imageView.layer.cornerRadius = 12.0
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
         imageView.addGestureRecognizer(tapGesture)
+        imageView.isUserInteractionEnabled = true
     }
 
     private func buildInterface() {
-        addSubview(imageView)
+        contentView.addSubview(imageView)
     }
 
     private func displayDefaultLayout() {
-        imageView.centerAnchors == centerAnchors
+        imageView.centerAnchors == contentView.centerAnchors
         imageView.heightAnchor == Constants.imagesHeight
         imageView.widthAnchor == Constants.imagesHeight
+    }
+    
+    @objc func imageTapped(gesture: UITapGestureRecognizer) {
+        guard let imageView = gesture.view as? UIImageView else { return }
+        imagePresenterDelegate?.presentImageViewWithBlur(imageView)
+//        guard let image = imageView.image else { return }
+//        imagePresenterDelegate?.presentImageWithBlur(for: image)
     }
 }

@@ -23,7 +23,7 @@ extension Date {
     enum Formatters {
         // UI formatters
         static let short = DateFormatter(withDateFormat: "MMM d") // jan 20
-        static let colombia = DateFormatter(withDateFormat: "EEE MMM dd yyyy HH:mm:ss")
+        static let longColombia = DateFormatter(withDateFormat: "EEE MMM dd yyyy HH:mm:ss")
     }
 
     var short: String {

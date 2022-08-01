@@ -26,52 +26,40 @@ class OneImagePostTableViewCell: UITableViewCell {
     // Views
     var userView = PostUserView(frame: .zero)
     var postMainImage = UIImageView()
-    var imagePresenterDelegate: ImagePresenter?
+    weak var imagePresenterDelegate: ImagePresenter?
 
-    func configure(with viewModel: PostCellViewModel, delegete: ImagePresenter) {
-        imagePresenterDelegate = delegete
-        postMainImage.gestureRecognizers?.removeAll()
+    func configure(with viewModel: PostCellViewModel, delegate: ImagePresenter) {
+        imagePresenterDelegate = delegate
         userView.configureView(for: viewModel.userViewModel)
-
         guard let pictureUrl = viewModel.picturesUrls.first else {
-            fatalError("== Error:  wrong cell dequeued viewModel has no picture URL ===")
+            fatalError("== Error: wrong cell dequeued viewModel has no picture URL ===")
         }
-
         imageLoadingSubscriber = postMainImage.loadImageFrom(url: pictureUrl)
             .sink(receiveCompletion: { (completion) in
                 switch completion {
-                case .failure(let error):
-                    print("=== An Error has happend \(error.localizedDescription) ===")
-                    self.postMainImage.image = UIImage(named: "user_placeholder")
-                    self.hideSkeleton()
-                case .finished:
-                    print("Success")
+                case .failure(let error): print("=== \(error.localizedDescription) ===")
+                case .finished: print("Success")
                 }
-            }, receiveValue: {[weak self] (imageLoaded) in
-                guard let self = self else {return}
-                if !imageLoaded {
-                    self.postMainImage.image = UIImage(named: "user_placeholder")
-                }
+            }, receiveValue: { [weak self] (imageLoaded) in
+                guard let self = self else { return }
+                guard imageLoaded else { return self.postMainImage.image = .placeholder }
                 self.hideSkeleton()
             })
-
-        postMainImage.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
-        postMainImage.addGestureRecognizer(tapGesture)
     }
 
     @objc func imageTapped(gesture: UITapGestureRecognizer) {
-        if let image = postMainImage.image {
-            imagePresenterDelegate?.presentImageWithBlur(for: image)
-        }
+        imagePresenterDelegate?.presentImageViewWithBlur(postMainImage)
+        /*
+        guard let image = postMainImage.image else { return }
+        imagePresenterDelegate?.presentImageWithBlur(for: image)*/
     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         configure()
         buildInterface()
         displayDefaultLayout()
+        showAnimatedGradientSkeleton()
     }
 
     required init?(coder: NSCoder) {
@@ -83,24 +71,29 @@ class OneImagePostTableViewCell: UITableViewCell {
         isSkeletonable = true
         postMainImage.isSkeletonable = true
         postMainImage.contentMode = .scaleToFill
-
-        self.showAnimatedGradientSkeleton()
+        postMainImage.clipsToBounds = true
+        postMainImage.layer.maskedCorners = .allCorners
+        postMainImage.layer.cornerRadius = 12.0
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped(gesture:)))
+        postMainImage.addGestureRecognizer(gesture)
+        postMainImage.isUserInteractionEnabled = true
     }
 
     private func buildInterface() {
-        addSubview(userView)
-        addSubview(postMainImage)
+        contentView.addSubview(userView)
+        contentView.addSubview(postMainImage)
+        bringSubviewToFront(postMainImage)
     }
 
     private func displayDefaultLayout() {
-        userView.topAnchor == topAnchor
-        userView.horizontalAnchors == horizontalAnchors
+        userView.topAnchor == contentView.topAnchor
+        userView.horizontalAnchors == contentView.horizontalAnchors
         userView.heightAnchor == Constants.userViewHeight
-
         postMainImage.topAnchor == userView.bottomAnchor + 12
         postMainImage.heightAnchor == Constants.imageHeight
-        postMainImage.horizontalAnchors == horizontalAnchors
-        postMainImage.bottomAnchor == bottomAnchor - 10
+        postMainImage.leadingAnchor == contentView.leadingAnchor + 12
+        postMainImage.trailingAnchor == contentView.trailingAnchor
+        postMainImage.bottomAnchor == contentView.bottomAnchor - 12
     }
 
 }

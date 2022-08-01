@@ -25,13 +25,8 @@ class PostPresenter {
     }
 
     func getNextPosts() -> AnyPublisher<Bool, Error> {
-        let publisher = Future<Bool,Error> { [weak self] promise in
-
-            guard let self = self else {
-                promise(.failure(PostError.couldNotFindReference))
-                return
-            }
-
+        let publisher = Future<Bool, Error> { [weak self] promise in
+            guard let self = self else { return promise(.failure(PostError.couldNotFindReference)) }
             self.requestSubscriber = self.userProvider.getAllUsers()
                 .map({ (user) -> [PostCellViewModel] in
                     var postViewModelList: [PostCellViewModel] = []
@@ -44,19 +39,16 @@ class PostPresenter {
                             )
                         )
                     }
-
                     return postViewModelList
                 })
                 .sink(receiveCompletion: { (completion) in
                     switch completion {
-                    case .failure(let error):
-                        print(error.localizedDescription)
-                        promise(.failure(error))
-                    case .finished:
-                        promise(.success(true))
+                    case .failure(let error): promise(.failure(error))
+                    case .finished: promise(.success(true))
                     }
                 }, receiveValue: { [weak self] (postList) in
-                    self?.postList = postList
+                    guard let self = self else { return }
+                    self.postList = postList.removeAnyDuplicates()
                 })
         }
 
@@ -65,25 +57,24 @@ class PostPresenter {
 
     func refreshPostList() -> AnyPublisher<Bool, Error> {
         let publisher = Future<Bool,Error> { [weak self] promise in
-
-            guard let self = self else {
-                promise(.failure(PostError.couldNotFindReference))
-                return
-            }
-
+            guard let self = self else { return promise(.failure(PostError.couldNotFindReference)) }
             self.requestSubscriber = self.userProvider.refreshData()
                 .map({ (user) -> [PostCellViewModel] in
                     var postViewModelList: [PostCellViewModel] = []
                     user.forEach { (user) in
-                        postViewModelList.append(
-                            PostCellViewModel(
-                                id: "\(user.post.id)",
-                                userViewModel: UsersUIViewViewModel(name: user.name, email: user.email, imageUrl: user.profilePicture, date: user.post.date.date.short),
-                                picturesUrls: user.post.pics
-                            )
+                        let userViewModel = UsersUIViewViewModel(
+                            name: user.name,
+                            email: user.email,
+                            imageUrl: user.profilePicture,
+                            date: user.post.date.date.short
                         )
+                        let viewModel = PostCellViewModel(
+                            id: "\(user.post.id)",
+                            userViewModel: userViewModel,
+                            picturesUrls: user.post.pics
+                        )
+                        postViewModelList.append(viewModel)
                     }
-
                     return postViewModelList
                 })
                 .sink(receiveCompletion: { (completion) in
@@ -91,14 +82,12 @@ class PostPresenter {
                     case .failure(let error):
                         print(error.localizedDescription)
                         promise(.failure(error))
-                    case .finished:
-                        promise(.success(true))
+                    case .finished: promise(.success(true))
                     }
                 }, receiveValue: { [weak self] (postList) in
                     self?.postList = postList
                 })
         }
-
         return publisher.eraseToAnyPublisher()
     }
 
