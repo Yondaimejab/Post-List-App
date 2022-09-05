@@ -2,12 +2,14 @@ PODS:
   - Alamofire (5.4.1)
   - Anchorage (4.5.0)
   - CouchbaseLite-Swift (2.8.4)
+  - lottie-ios (3.4.2)
   - SkeletonView (1.13.0)
 
 DEPENDENCIES:
   - Alamofire
   - Anchorage
   - CouchbaseLite-Swift
+  - lottie-ios
   - SkeletonView
 
 SPEC REPOS:
@@ -15,14 +17,16 @@ SPEC REPOS:
     - Alamofire
     - Anchorage
     - CouchbaseLite-Swift
+    - lottie-ios
     - SkeletonView
 
 SPEC CHECKSUMS:
   Alamofire: 2291f7d21ca607c491dd17642e5d40fdcda0e65c
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
   CouchbaseLite-Swift: a25971eb557d646359581371e559333a386a5701
+  lottie-ios: 6bbc53eef6957e4744a50321507015fba72d8ca6
   SkeletonView: 2b14cb767a7da384d17d5d7e1db0d55a6cf9566a
 
-PODFILE CHECKSUM: c3c571be6086b0b49f80a38ca821212f30b48f0d
+PODFILE CHECKSUM: f2cec67fa2ecbf13d86c51e4ef8eb37f5545ba57
 
 COCOAPODS: 1.10.1

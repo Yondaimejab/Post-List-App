@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3308D54479181CFE5C8CDAA7 /* Pods_ImagePostApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5A4D253F9009A2388AF88FA /* Pods_ImagePostApp.framework */; };
-		4369FFE8F0E90B8262EAC58C /* Pods_ImagePostApp_ImagePostAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83627B35318CE343A6FF5536 /* Pods_ImagePostApp_ImagePostAppUITests.framework */; };
-		5C80BED689534AB4C6785857 /* Pods_ImagePostAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6DF1D0E9B163E42D16A3932 /* Pods_ImagePostAppTests.framework */; };
+		4681D90A301E1AAA928EAC63 /* Pods_ImagePostApp_ImagePostAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D5B1BEB09B00557F82C1B453 /* Pods_ImagePostApp_ImagePostAppUITests.framework */; };
 		5D53C3FD25F50856006B5014 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D53C3FC25F50856006B5014 /* Routing.swift */; };
 		5D53C40225F532ED006B5014 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D53C40125F532ED006B5014 /* ArrayExtension.swift */; };
 		5D53C40A25F54C4E006B5014 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D53C40925F54C4E006B5014 /* Date+Extension.swift */; };
@@ -40,7 +38,10 @@
 		5DBDB77525F3CA5200BB2DFD /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB77425F3CA5200BB2DFD /* PostViewController.swift */; };
 		5DBDB77A25F3CC8C00BB2DFD /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB77925F3CC8C00BB2DFD /* Post.swift */; };
 		5DBDB77F25F3CD1200BB2DFD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBDB77E25F3CD1200BB2DFD /* User.swift */; };
-		82A842A4289848F500BA27B0 /* CornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A842A3289848F500BA27B0 /* CornerMask+Extension.swift */; };
+		82BDD17828B6DC76006F8065 /* 111266-charecter-3.json in Resources */ = {isa = PBXBuildFile; fileRef = 82BDD17728B6DC76006F8065 /* 111266-charecter-3.json */; };
+		82D466DB28C65E390042941C /* CornerMask+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82D466DA28C65E390042941C /* CornerMask+Extension.swift */; };
+		AC37AE32F12FB03773A4BB28 /* Pods_ImagePostAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F304395B2EAC90A4A2BCDC98 /* Pods_ImagePostAppTests.framework */; };
+		BA2A8900AE48D5137549505D /* Pods_ImagePostApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9FB580FB915CE3622639AE3 /* Pods_ImagePostApp.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,9 +62,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0E1B33BF25E42739C32E8DA3 /* Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig"; path = "Target Support Files/Pods-ImagePostApp-ImagePostAppUITests/Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig"; sourceTree = "<group>"; };
-		18CC6AA26950B946EEB9E9F6 /* Pods-ImagePostAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ImagePostAppTests/Pods-ImagePostAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		3149D01B47AF4E031E142F35 /* Pods-ImagePostApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp.debug.xcconfig"; path = "Target Support Files/Pods-ImagePostApp/Pods-ImagePostApp.debug.xcconfig"; sourceTree = "<group>"; };
+		0C1D9478EBC9AE91D482D895 /* Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig"; path = "Target Support Files/Pods-ImagePostApp-ImagePostAppUITests/Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig"; sourceTree = "<group>"; };
+		0EF7410BDD8E2D96C9515661 /* Pods-ImagePostAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostAppTests.debug.xcconfig"; path = "Target Support Files/Pods-ImagePostAppTests/Pods-ImagePostAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5D53C3FC25F50856006B5014 /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		5D53C40125F532ED006B5014 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		5D53C40925F54C4E006B5014 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -100,13 +100,15 @@
 		5DBDB77425F3CA5200BB2DFD /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		5DBDB77925F3CC8C00BB2DFD /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5DBDB77E25F3CD1200BB2DFD /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		82A842A3289848F500BA27B0 /* CornerMask+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CornerMask+Extension.swift"; sourceTree = "<group>"; };
-		83627B35318CE343A6FF5536 /* Pods_ImagePostApp_ImagePostAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagePostApp_ImagePostAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A93F8FF29D7EC2E4700E31BC /* Pods-ImagePostAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostAppTests.release.xcconfig"; path = "Target Support Files/Pods-ImagePostAppTests/Pods-ImagePostAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		C5A4D253F9009A2388AF88FA /* Pods_ImagePostApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagePostApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CCAFB38AC7105383B0804253 /* Pods-ImagePostApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp.release.xcconfig"; path = "Target Support Files/Pods-ImagePostApp/Pods-ImagePostApp.release.xcconfig"; sourceTree = "<group>"; };
-		D30030FD2AEDA5261E07EDBC /* Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-ImagePostApp-ImagePostAppUITests/Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F6DF1D0E9B163E42D16A3932 /* Pods_ImagePostAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagePostAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		82BDD17728B6DC76006F8065 /* 111266-charecter-3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "111266-charecter-3.json"; sourceTree = "<group>"; };
+		82D466DA28C65E390042941C /* CornerMask+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CornerMask+Extension.swift"; sourceTree = "<group>"; };
+		A9FB580FB915CE3622639AE3 /* Pods_ImagePostApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagePostApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA96250B5A8231F9D2FC50A9 /* Pods-ImagePostApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp.debug.xcconfig"; path = "Target Support Files/Pods-ImagePostApp/Pods-ImagePostApp.debug.xcconfig"; sourceTree = "<group>"; };
+		D5B1BEB09B00557F82C1B453 /* Pods_ImagePostApp_ImagePostAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagePostApp_ImagePostAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC90FBC3973A01CE95531487 /* Pods-ImagePostAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostAppTests.release.xcconfig"; path = "Target Support Files/Pods-ImagePostAppTests/Pods-ImagePostAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		E1F9AD2242E0BF8B99256337 /* Pods-ImagePostApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp.release.xcconfig"; path = "Target Support Files/Pods-ImagePostApp/Pods-ImagePostApp.release.xcconfig"; sourceTree = "<group>"; };
+		EDFA4D49C30D0F3EF6C5D895 /* Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-ImagePostApp-ImagePostAppUITests/Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		F304395B2EAC90A4A2BCDC98 /* Pods_ImagePostAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImagePostAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3308D54479181CFE5C8CDAA7 /* Pods_ImagePostApp.framework in Frameworks */,
+				BA2A8900AE48D5137549505D /* Pods_ImagePostApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5C80BED689534AB4C6785857 /* Pods_ImagePostAppTests.framework in Frameworks */,
+				AC37AE32F12FB03773A4BB28 /* Pods_ImagePostAppTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,7 +132,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4369FFE8F0E90B8262EAC58C /* Pods_ImagePostApp_ImagePostAppUITests.framework in Frameworks */,
+				4681D90A301E1AAA928EAC63 /* Pods_ImagePostApp_ImagePostAppUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,8 +166,8 @@
 				5DBDB73025F3C07A00BB2DFD /* ImagePostAppTests */,
 				5DBDB73B25F3C07A00BB2DFD /* ImagePostAppUITests */,
 				5DBDB71825F3C07700BB2DFD /* Products */,
-				79A6402C50E802E6594E7A78 /* Pods */,
-				CF1E4C136EE545506A9D96C1 /* Frameworks */,
+				695FF086AEA9C39ED41F5DDA /* Pods */,
+				B33E7471C732701BBA3478C1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -217,6 +219,7 @@
 		5DBDB74D25F3C08900BB2DFD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				82BDD17528B6DAE4006F8065 /* Resources */,
 				5DBDB72825F3C07A00BB2DFD /* Info.plist */,
 				5DBDB74E25F3C08F00BB2DFD /* Extensions */,
 			);
@@ -226,12 +229,12 @@
 		5DBDB74E25F3C08F00BB2DFD /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				82D466DA28C65E390042941C /* CornerMask+Extension.swift */,
 				5D53C40925F54C4E006B5014 /* Date+Extension.swift */,
 				5D74087425F3D8D600C35A15 /* UIImageView+Extension.swift */,
 				5D74086E25F3D57000C35A15 /* UIView+Extension.swift */,
 				5D53C40125F532ED006B5014 /* ArrayExtension.swift */,
 				5D53C41225F54DC7006B5014 /* String+Extension.swift */,
-				82A842A3289848F500BA27B0 /* CornerMask+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -310,25 +313,41 @@
 			path = CustomViews;
 			sourceTree = "<group>";
 		};
-		79A6402C50E802E6594E7A78 /* Pods */ = {
+		695FF086AEA9C39ED41F5DDA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3149D01B47AF4E031E142F35 /* Pods-ImagePostApp.debug.xcconfig */,
-				CCAFB38AC7105383B0804253 /* Pods-ImagePostApp.release.xcconfig */,
-				D30030FD2AEDA5261E07EDBC /* Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig */,
-				0E1B33BF25E42739C32E8DA3 /* Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig */,
-				18CC6AA26950B946EEB9E9F6 /* Pods-ImagePostAppTests.debug.xcconfig */,
-				A93F8FF29D7EC2E4700E31BC /* Pods-ImagePostAppTests.release.xcconfig */,
+				CA96250B5A8231F9D2FC50A9 /* Pods-ImagePostApp.debug.xcconfig */,
+				E1F9AD2242E0BF8B99256337 /* Pods-ImagePostApp.release.xcconfig */,
+				EDFA4D49C30D0F3EF6C5D895 /* Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig */,
+				0C1D9478EBC9AE91D482D895 /* Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig */,
+				0EF7410BDD8E2D96C9515661 /* Pods-ImagePostAppTests.debug.xcconfig */,
+				DC90FBC3973A01CE95531487 /* Pods-ImagePostAppTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		CF1E4C136EE545506A9D96C1 /* Frameworks */ = {
+		82BDD17528B6DAE4006F8065 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C5A4D253F9009A2388AF88FA /* Pods_ImagePostApp.framework */,
-				83627B35318CE343A6FF5536 /* Pods_ImagePostApp_ImagePostAppUITests.framework */,
-				F6DF1D0E9B163E42D16A3932 /* Pods_ImagePostAppTests.framework */,
+				82BDD17628B6DAF2006F8065 /* Animations */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		82BDD17628B6DAF2006F8065 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				82BDD17728B6DC76006F8065 /* 111266-charecter-3.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
+		B33E7471C732701BBA3478C1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A9FB580FB915CE3622639AE3 /* Pods_ImagePostApp.framework */,
+				D5B1BEB09B00557F82C1B453 /* Pods_ImagePostApp_ImagePostAppUITests.framework */,
+				F304395B2EAC90A4A2BCDC98 /* Pods_ImagePostAppTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -443,6 +462,7 @@
 			files = (
 				5DBDB72725F3C07A00BB2DFD /* LaunchScreen.storyboard in Resources */,
 				5DBDB72425F3C07A00BB2DFD /* Assets.xcassets in Resources */,
+				82BDD17828B6DC76006F8065 /* 111266-charecter-3.json in Resources */,
 				5DBDB72225F3C07700BB2DFD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -589,7 +609,7 @@
 				5DBDB77F25F3CD1200BB2DFD /* User.swift in Sources */,
 				5D53C42725F56590006B5014 /* LocalUserDataProvider.swift in Sources */,
 				5DBDB76D25F3C46D00BB2DFD /* LaunchViewController.swift in Sources */,
-				82A842A4289848F500BA27B0 /* CornerMask+Extension.swift in Sources */,
+				82D466DB28C65E390042941C /* CornerMask+Extension.swift in Sources */,
 				5DBDB71D25F3C07700BB2DFD /* SceneDelegate.swift in Sources */,
 				5D7408A925F3F1FA00C35A15 /* FourOrMoreImagesPostTableViewCell.swift in Sources */,
 				5D74088325F3E18400C35A15 /* PostCellViewModel.swift in Sources */,
@@ -769,12 +789,12 @@
 		};
 		5DBDB74225F3C07A00BB2DFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3149D01B47AF4E031E142F35 /* Pods-ImagePostApp.debug.xcconfig */;
+			baseConfigurationReference = CA96250B5A8231F9D2FC50A9 /* Pods-ImagePostApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U2VK48STRA;
+				DEVELOPMENT_TEAM = 35MN533ZJW;
 				INFOPLIST_FILE = "ImagePostApp/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -789,12 +809,12 @@
 		};
 		5DBDB74325F3C07A00BB2DFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CCAFB38AC7105383B0804253 /* Pods-ImagePostApp.release.xcconfig */;
+			baseConfigurationReference = E1F9AD2242E0BF8B99256337 /* Pods-ImagePostApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = U2VK48STRA;
+				DEVELOPMENT_TEAM = 35MN533ZJW;
 				INFOPLIST_FILE = "ImagePostApp/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -809,7 +829,7 @@
 		};
 		5DBDB74525F3C07A00BB2DFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18CC6AA26950B946EEB9E9F6 /* Pods-ImagePostAppTests.debug.xcconfig */;
+			baseConfigurationReference = 0EF7410BDD8E2D96C9515661 /* Pods-ImagePostAppTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -832,7 +852,7 @@
 		};
 		5DBDB74625F3C07A00BB2DFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A93F8FF29D7EC2E4700E31BC /* Pods-ImagePostAppTests.release.xcconfig */;
+			baseConfigurationReference = DC90FBC3973A01CE95531487 /* Pods-ImagePostAppTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -855,7 +875,7 @@
 		};
 		5DBDB74825F3C07A00BB2DFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D30030FD2AEDA5261E07EDBC /* Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig */;
+			baseConfigurationReference = EDFA4D49C30D0F3EF6C5D895 /* Pods-ImagePostApp-ImagePostAppUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -876,7 +896,7 @@
 		};
 		5DBDB74925F3C07A00BB2DFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E1B33BF25E42739C32E8DA3 /* Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig */;
+			baseConfigurationReference = 0C1D9478EBC9AE91D482D895 /* Pods-ImagePostApp-ImagePostAppUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;

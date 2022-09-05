@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,15 +18,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gallery_icon" translatesAutoresizingMaskIntoConstraints="NO" id="lms-FL-f5i">
-                                <rect key="frame" x="157.5" y="303.5" width="60" height="60"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8eV-L6-9NT" customClass="AnimationView" customModule="Lottie">
+                                <rect key="frame" x="67" y="141" width="240" height="167"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I3d-no-JyI">
+                                <rect key="frame" x="333" y="20" width="26" height="22"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="IkV-nk-IKJ"/>
-                                    <constraint firstAttribute="width" constant="60" id="QrP-Fl-7TM"/>
+                                    <constraint firstAttribute="width" constant="26" id="X4B-xV-NWO"/>
                                 </constraints>
-                            </imageView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Koombea Post App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTQ-me-nGa">
-                                <rect key="frame" x="20" y="383.5" width="335" height="38.5"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button">
+                                    <imageReference key="image" image="arrow.right" catalog="system" symbolScale="default"/>
+                                </state>
+                                <connections>
+                                    <segue destination="rBe-mY-fgm" kind="show" id="oyR-JT-ohY"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Koombea Post App" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTQ-me-nGa">
+                                <rect key="frame" x="58" y="341" width="259" height="38.5"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="35"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -34,17 +47,13 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="lms-FL-f5i" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7qu-E8-jWW"/>
-                            <constraint firstItem="sTQ-me-nGa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="DZu-2P-PuL"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="sTQ-me-nGa" secondAttribute="trailing" constant="20" id="XBi-59-Kz6"/>
-                            <constraint firstItem="lms-FL-f5i" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ftV-wP-H7P"/>
-                            <constraint firstItem="sTQ-me-nGa" firstAttribute="top" secondItem="lms-FL-f5i" secondAttribute="bottom" constant="20" id="xJy-Oo-tkB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="I3d-no-JyI" secondAttribute="trailing" constant="16" id="8Ht-Y0-zLB"/>
+                            <constraint firstItem="I3d-no-JyI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="ir9-yd-Uom"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="IconImageView" destination="lms-FL-f5i" id="1jp-Mf-OQn"/>
+                        <outlet property="lottieAnimationView" destination="8eV-L6-9NT" id="iep-xq-anM"/>
                         <outlet property="titleLabel" destination="sTQ-me-nGa" id="dph-dN-Hia"/>
-                        <segue destination="rBe-mY-fgm" kind="show" identifier="homeSegueIdentifier" id="ugu-an-z1M"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -118,8 +127,11 @@
             <point key="canvasLocation" x="2054" y="123"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="8eV-L6-9NT"/>
+    </designables>
     <resources>
-        <image name="gallery_icon" width="1200" height="1063"/>
+        <image name="arrow.right" catalog="system" width="128" height="98"/>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>

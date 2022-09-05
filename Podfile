@@ -10,6 +10,7 @@ target 'ImagePostApp' do
   pod "Anchorage"
   pod 'SkeletonView'
   pod 'CouchbaseLite-Swift'
+  pod 'lottie-ios'
 
   target 'ImagePostAppTests' do
     inherit! :search_paths
